@@ -1,0 +1,24 @@
+#! /bin/bash
+v4=$(curl -s ipv4.icanhazip.com);
+
+if test $? -eq 0; then
+    echo $v4 '<- new v4'
+else
+    echo 'ERROR: A-record'
+    exit
+fi
+
+v6=$(curl -s ipv6.icanhazip.com);
+
+if test $? -eq 0; then 
+    echo $v6 '<- new v6'
+else
+    echo 'ERROR: AAAA-record'
+    exit
+fi
+
+if test -f /home/pi/work/dyndns/dyndns.php; then
+    php /home/pi/work/dyndns/dyndns.php $v4 $v6 
+else
+    echo 'ERROR: File dyndns.php does not exist'
+fi
